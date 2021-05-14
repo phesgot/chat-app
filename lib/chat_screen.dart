@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:chat/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'chat_message.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -32,9 +32,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
     try {
       final GoogleSignInAccount googleSignInAccount =
-      await googleSignIn.signIn();
+        await googleSignIn.signIn();
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+        await googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         idToken: googleSignInAuthentication.idToken,
@@ -42,7 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
       );
 
       final AuthResult authResult =
-      await FirebaseAuth.instance.signInWithCredential(credential);
+        await FirebaseAuth.instance.signInWithCredential(credential);
 
       final FirebaseUser user = authResult.user;
       return user;
@@ -54,40 +54,38 @@ class _ChatScreenState extends State<ChatScreen> {
   void _sendMessage({String text, File imgFile}) async {
     final FirebaseUser user = await _getUser();
 
-    Map<String, dynamic> data = {};
-
-    if (user != null) {
+    if (user == null) {
       _scaffoldkey.currentState.showSnackBar(
           SnackBar(
             content: Text('Não foi possivel fazer o login. Tente novamente!'),
             backgroundColor: Colors.red,
           )
       );
-
-      Map<String, dynamic> data = {
-        "uid": user.uid,
-        "senderName": user.displayName,
-        "senderPhotoUrl": user.photoUrl,
-      };
-
-      if (imgFile != null) {
-        StorageUploadTask task = FirebaseStorage.instance
-            .ref()
-            .child(DateTime
-            .now()
-            .millisecondsSinceEpoch
-            .toString())
-            .putFile(imgFile);
-
-        StorageTaskSnapshot taskSnapshot = await task.onComplete;
-        String url = await taskSnapshot.ref.getDownloadURL();
-        data['imgUrl'] = url;
-      }
-
-      if (text != null) data['text'] = text;
-
-      Firestore.instance.collection('messages').add(data);
     }
+
+    Map<String, dynamic> data = {
+      "uid": user.uid,
+      "senderName": user.displayName,
+      "senderPhotoUrl": user.photoUrl,
+    };
+
+    if (imgFile != null) {
+       StorageUploadTask task = FirebaseStorage.instance
+           .ref()
+           .child(DateTime
+           .now()
+           .millisecondsSinceEpoch
+           .toString())
+           .putFile(imgFile);
+
+       StorageTaskSnapshot taskSnapshot = await task.onComplete;
+       String url = await taskSnapshot.ref.getDownloadURL();
+       data['imgUrl'] = url;
+    }
+
+    if (text != null) data['text'] = text;
+
+    Firestore.instance.collection('messages').add(data);
   }
 
     @override
@@ -118,9 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           itemCount: documents.length,
                           reverse: true,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(documents[index].data['text']),
-                            );
+                            return ChatMessage(documents[index].data, true);
                           });
                   }
                 },
