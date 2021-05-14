@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "808041582530",
+    "project_id": "chatflutter-50abc",
+    "storage_bucket": "chatflutter-50abc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808041582530:android:4d2cc636a1cf55107c905b",
+        "android_client_info": {
+          "package_name": "torres.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808041582530-8dt1fphem68vlig8seboii41n6pcp0fv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "torres.chat",
+            "certificate_hash": "d2414355a8ca7f4e3539e9fb6ca256d0c51d8790"
+          }
+        },
+        {
+          "client_id": "808041582530-8ftibeuubmurvmt16i1p27144b6ioihv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZFrqmZC2N1GILtoloqjLnLSt8ZonYWqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808041582530-8ftibeuubmurvmt16i1p27144b6ioihv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
